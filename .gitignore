@@ -1,0 +1,42 @@
+# Ignore log files
+*.log
+
+# Ignore pickle files
+*.pickle
+
+# Ignore gguf files
+*.gguf
+
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+.env/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+.venv/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+# data/
+env3.11/
+node_modules/
+funsearch/venv/
+*.prof
+MANIFEST
+.env
