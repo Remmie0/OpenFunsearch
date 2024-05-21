@@ -64,7 +64,7 @@ class ExternalProcessSandbox(DummySandbox):
   funsearch algorithm. It might be easier to set up and thus nice environment to tune the prompts and other code.
   """
 
-  def __init__(self, base_path: pathlib.Path, timeout_secs: int = 30, python_path: str = "python"):
+  def __init__(self, base_path: pathlib.Path, timeout_secs: int = 60, python_path: str = "python"):
     super(ExternalProcessSandbox, self).__init__()
 
     self.output_path = pathlib.Path(base_path) / f"sandbox{self.id}"
@@ -87,24 +87,19 @@ class ExternalProcessSandbox(DummySandbox):
     """
     prog_path = call_data_path / "prog.pickle"
     output_file = call_data_path / "output.pickle"
-    cmd = (f"timeout {self.timeout_secs} {self.python_path} {CONTAINER_MAIN} {prog_path} {input_path} {output_file}"
-           f" 2> {error_file_path}")
-
-    return os.system(cmd)
-    #PVD alternative option pythonic timeout code added
-    # cmd = (f"{self.python_path} {CONTAINER_MAIN} {prog_path} {input_path} {output_file}"  # original code
+    cmd = (f"timeout {self.timeout_secs} {self.python_path} {CONTAINER_MAIN} {prog_path} {input_path} {output_file} 2> {error_file_path}")
+    # cmd = (f"timeout {self.timeout_secs} {self.python_path} {CONTAINER_MAIN} {prog_path} {input_path} {output_file}"
     #        f" 2> {error_file_path}")
-    
-    # try:
-    #     subprocess.run(cmd, shell=True, check=True, timeout=self.timeout_secs)
-    #     return 0  # Simulating successful execution
-    # except subprocess.TimeoutExpired:
-    #     logging.error(f"Command timed out after {self.timeout_secs} seconds.")
-    #     return 1  # Indicating a timeout error
-    # except subprocess.CalledProcessError:
-    #     logging.error("Command failed with non-zero exit status")
-    #     return 1  # Indicating a failure
+    # print("Executing command:", cmd)
+    # result = os.system(cmd)
+    # exit_code = result >> 8
+    # signal_number = result & 0xFF
 
+    # print("Command result:", result)
+    # print("Exit code:", exit_code)
+    # print("Signal number:", signal_number)
+    # return exit_code
+    return os.system(cmd)
 
   def run(
           self,
@@ -190,7 +185,7 @@ class ContainerSandbox(ExternalProcessSandbox):
     os.system(cmd)
     cls.image_built = True
 
-  def __init__(self, base_path: pathlib.Path, extra_pip_packages: str = "numpy", timeout_secs=30):
+  def __init__(self, base_path: pathlib.Path, extra_pip_packages: str = "numpy", timeout_secs=60):
     super(ContainerSandbox, self).__init__(base_path, timeout_secs)
 
     if not ContainerSandbox.image_built:

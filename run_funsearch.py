@@ -39,7 +39,7 @@ if __name__ == '__main__':
     sys.argv = [
         'funsearch', 
         'run', 
-        'examples/capset.py', 
+        'examples/worddesign.py', 
         # 'examples/admissibleset.py', 
         # 'examples/shannoncyclic.py', 
         '8', 
@@ -53,6 +53,7 @@ if __name__ == '__main__':
         #'--model_name=codellama-13b-python.Q5_K_S',
         # '--model_name=Meta-Llama-3-8B-Instruct-Q4_K_M', 
         '--model_name=Meta-Llama-3-8B-Instruct-Q5_K_M', 
+        #'--model_name=codeqwen-1_5-7b-chat-q6_k',
         '--output_path=./data/', 
         '--iterations=-1', 
         '--samplers=1', 

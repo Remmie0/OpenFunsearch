@@ -167,7 +167,7 @@ class Evaluator:
       test_output, runs_ok = self._sandbox.run(
           program, self._function_to_run, current_input, self._timeout_seconds)
 
-    with open('last_eval.txt', 'a') as file_eval:   #PVD: show when output is valid according to parser
+    with open('last_eval.txt', 'a') as file_eval:  
       file_eval.write(f"PROGRAM     = {program}\n\n")
       file_eval.write(f"TEST OUTPUT = {test_output}, RUNS_OK = {runs_ok}, island_ID = {island_id}\n")
 

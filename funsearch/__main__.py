@@ -13,6 +13,8 @@ from llama_cpp import Llama
 from dotenv import load_dotenv
 
 import sys
+import signal
+import traceback
 
 print(f"main - Python version: {'.'.join(map(str, sys.version_info[:3]))}")
 
@@ -188,5 +190,46 @@ def ls(db_file):
     print("\n")
 
 
+#Back up mechanism:
+def save_last_eval(message):
+    current_time = datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
+    new_backup_file_path = os.path.join(backup_folder, f'last_eval_{current_time}.txt')
+    last_eval_file_path = 'last_eval.txt'
+
+    # If last_eval.txt exists, read its contents and append to the new backup file
+    if os.path.exists(last_eval_file_path):
+        with open(last_eval_file_path, 'r') as last_eval_file:
+            last_eval_content = last_eval_file.read()
+        with open(new_backup_file_path, 'w') as new_backup_file:
+            new_backup_file.write(last_eval_content)
+
+    # Append the new message to the new backup file
+    with open(new_backup_file_path, 'a') as new_backup_file:
+        new_backup_file.write(message)
+
+    # Write the new message to last_eval.txt, overwriting it
+    with open(last_eval_file_path, 'w') as last_eval_file:
+        last_eval_file.write(message)
+
+def signal_handler(signal, frame):
+    save_last_eval("Code execution was manually interrupted.")
+    sys.exit(0)
+
+signal.signal(signal.SIGINT, signal_handler)
+
+# Ensure the backups folder exists
+backup_folder = 'data/backups'
+if not os.path.exists(backup_folder):
+    os.makedirs(backup_folder)
+
 if __name__ == '__main__':
-  main()
+  try:
+    print("Running main code...")
+
+    while True:
+      main()
+
+  except Exception as e:
+    error_message = ''.join(traceback.format_exception(None, e, e.__traceback__))
+    save_last_eval(f"Code crashed or interrupted with the following error:\n{error_message}")
+    raise

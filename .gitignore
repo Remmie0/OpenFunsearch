@@ -33,10 +33,19 @@ share/python-wheels/
 *.egg-info/
 .installed.cfg
 *.egg
-# data/
+data/
 env3.11/
 node_modules/
 funsearch/venv/
 *.prof
 MANIFEST
 .env
+
+#programs
+program.py
+
+#All text, csv, png files are run specific 
+*.txt
+*.png
+*.csv
+

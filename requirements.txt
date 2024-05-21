@@ -38,7 +38,7 @@ idna==3.6
 Jinja2==3.1.3
 kiwisolver==1.4.5
 -e git+https://github.com/meta-llama/llama3.git@0cee08ec68f4cfc0c89fe4a9366d82679aaa2a66#egg=llama3
-llama_cpp_python==0.2.58
+llama_cpp_python
 llm==0.12
 llm-gpt4all==0.3
 llm-llama-cpp==0.3

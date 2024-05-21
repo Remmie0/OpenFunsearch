@@ -38,6 +38,29 @@ def reformat_to_two_spaces(code: str) -> str:
     ]
     return "\n".join(reformatted_lines)
 
+def post_process(code: str) -> str:
+    # Define a list of patterns to remove
+    patterns = [
+        r'\[/INST\]',
+        r'>\[INST\]',
+        r'<s>',
+        r'<\s>',
+        r'\[PYTHON\]\n```',
+        r'```\n\[/PYTHON\]',
+        r'\[PYTHON\]',
+        r'\[/PYTHON\]',
+    ]
+
+    # Function to remove code markers
+    def remove_code_markers(code):
+        # Loop through the list of patterns and remove each one from the code string
+        for pattern in patterns:
+            code = re.sub(pattern, '', code)
+        return code
+    
+    return remove_code_markers(code)
+
+
 class LLM:
   """Language model that predicts continuation of provided source code."""
 
@@ -58,25 +81,16 @@ class LLM:
           stop=["</s>"],
           echo=True
       )
-      with open('last_eval.txt', 'a') as file_eval:   #PVD: show when output is valid according to parser
-        file_eval.write(f"RAW OUTPUT\n{output}\n")
-
+      # PVD basic prompt engineering
+      # TODO: needs to vary by LLM
       output_text = output['choices'][0]['text']
-      with open('last_eval.txt', 'a') as file_eval:   #PVD: show when output is valid according to parser
-        file_eval.write(f"OUTPUT_TEXT\n{output_text}\n")
-
       code_start = output_text.find('```@funsearch.run\n') + 3  # Find the start of the code block
-      with open('last_eval.txt', 'a') as file_eval:   #PVD: show when output is valid according to parser
-        file_eval.write(f"CODE_START\n{code_start}\n")
-
-      # response_4 = output_text[code_start:].strip()  # Extract and strip any extra whitespace
-      response_4 = output_text[code_start:]
-      with open('last_eval.txt', 'a') as file_eval:   #PVD: show when output is valid according to parser
-        file_eval.write(f"RESPONSE_4\n{response_4}\n")
-
-      response = reformat_to_two_spaces(response_4)
-      with open('last_eval.txt', 'a') as file_eval:   #PVD: show when output is valid according to parser
-        file_eval.write(f"RESPONSE\n{response}\n")
+      response = output_text[code_start:]
+      response = post_process(response)
+      response = reformat_to_two_spaces(response)
+      with open('last_eval.txt', 'a') as file_eval:  
+        file_eval.write(f"FINAL RESPONSE\n{response}\n")
+        file_eval.flush()  
 
     if response:
       self._log(prompt, response, self.prompt_count)
@@ -114,8 +128,9 @@ class Sampler:
     samples = self._llm.draw_samples(prompt.code)
     # This loop can be executed in parallel on remote evaluator machines.
 
-    with open('last_eval.txt', 'a') as file_eval:   #PVD: show when output is valid according to parser
+    with open('last_eval.txt', 'a') as file_eval:   
       file_eval.write(f"SAMPLES\n{samples}\n")
+      file_eval.flush()
 
     for sample in samples:
       chosen_evaluator = np.random.choice(self._evaluators)
