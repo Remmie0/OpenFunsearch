@@ -27,7 +27,7 @@ python run_funsearch.py
 ```
 
 ### Analyzing Results 
-After completing a run, you can analyze the results using the run_analyzer.ipynb Jupyter notebook. This notebook provides an exploratory data analysis to get a quick overview over the results. 
+After completing a run, you can analyze the results using the run_analyzer.ipynb Jupyter notebook. This notebook provides an exploratory data analysis to get a quick overview over the results. Please refer to the specific eval_datetime.txt for analysis on a specific run.
 
 ## Contact
 If you have any questions or need further assistance, please feel free to contact me!
