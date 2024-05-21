@@ -52,5 +52,5 @@ last_eval.txt generates output:
 - Runs that passed start with RUNS_OK = True and show the evaluated score as TEST OUTPUT = Value
 
 Common errors: 
-- Core dumped (Segmentation Fault) --> most likely due to out of memory (on GPU), solution: find a smaller model or reduce gpu layers in main.py 
+- Core dumped (Segmentation Fault) --> most likely due to out of memory (on GPU), solution: find a smaller model or reduce gpu layers in main.py, LLama models seem to get segmentation faults more often. 
 - Sandbox not found --> There can  be issues depending on the system with ' ' in the absolute filepath. Try to move the project to a place without spaces in the file path. 
