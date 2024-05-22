@@ -5,8 +5,7 @@ Return code for Python method priority_vX, where every iteration of priority_vX 
 Be creative. 
 Find an algorithm that improves over the other priority functioncs.
 
-only return code without explanation or something else, this is to reduce overhead and to use output in a sequence. Only return 1 function in total.
-
+only return code without explanation or something else, this is to reduce overhead and to use output in a sequence. Only return 1 full function.
 Return the code in full function such as:
 
 def priority(el: Tuple[int, ...], n: int) -> float:
