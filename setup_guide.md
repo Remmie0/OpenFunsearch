@@ -14,7 +14,7 @@ This document explains how to set up the Funsearch environment to run locally on
 
 ## Prerequisites
 - Git for cloning the repository
-- Decent hardware as even smaller models are quite memory intensive (segmentation faults can happen)
+- Decent hardware, as even smaller models are quite memory intensive (segmentation faults can happen)
 - Anaconda
 - Ensure your system is up to date:
   ```
@@ -107,7 +107,8 @@ This document explains how to set up the Funsearch environment to run locally on
 ### When Running Funsearch
 The `last_eval.txt` file generates output:
 - Runs that passed start with `RUNS_OK = True` and show the evaluated score as `TEST OUTPUT = Value`.
+- The file will be saved into the backup folder with the datetime concatenation to analyze older runs. 
 
 ### Common Errors
-- **Core dumped (Segmentation Fault):** This is most likely due to out of memory (on GPU). Solution: find a smaller model or reduce GPU layers in `main.py`. LLama models seem to get segmentation faults more often.
+- **Core dumped (Segmentation Fault):** This is most likely due to out-of-memory (on GPU). Solution: find a smaller model or reduce GPU layers in `main.py`. LLama models seem to get segmentation faults more often. Another fix for us was to update llama-cpp to the latest version after the release of Llama 3.
 - **Sandbox not found:** There can be issues depending on the system with spaces ' ' in the absolute file path. Try to move the project to a location without spaces in the file path.
