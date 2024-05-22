@@ -284,11 +284,11 @@ class Island:
     indices = np.argsort(scores)
     sorted_implementations = [implementations[i] for i in indices]
     version_generated = len(sorted_implementations) + 1
-    return self._generate_prompt(sorted_implementations), version_generated
+    return self._generate_prompt(sorted_implementations, scores), version_generated
 
   def _generate_prompt(
       self,
-      implementations: Sequence[code_manipulation.Function]) -> str:
+      implementations: Sequence[code_manipulation.Function], scores) -> str:
     """Creates a prompt containing a sequence of function `implementations`."""
     implementations = copy.deepcopy(implementations)  # We will mutate these.
 
@@ -315,7 +315,7 @@ class Island:
         name=new_function_name,
         body='',
         docstring=('Improved version of '
-                   f'`{self._function_to_evolve}_v{next_version - 1}`.'),
+                   f'`{self._function_to_evolve}_v{next_version - 1} with score {scores[next_version-1]}`.'),
     )
     versioned_functions.append(header)
 

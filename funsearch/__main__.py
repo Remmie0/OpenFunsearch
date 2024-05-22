@@ -117,8 +117,8 @@ def run(spec_file, inputs, model_name, output_path, load_backup, iterations, sam
     model = Llama(
         model_path=f"{model_name}.gguf",  # Download the model file first, "phi-2.Q4_K_M.gguf" is "medium, balanced quality - recommended"
         verbose=False,
-        # n_ctx=16384,             # The max sequence length to use - note that longer sequence lengths require much more resources
-        n_threads=16,            # The number of CPU threads to use, tailor to your system and the resulting performance
+        n_ctx= 1024,             # The max sequence length to use - note that longer sequence lengths require much more resources
+        n_threads=32,            # The number of CPU threads to use, tailor to your system and the resulting performance
         n_gpu_layers=-1          # The number of layers to offload to GPU, if you have GPU acceleration available. Set to 0 if no GPU acceleration, -1 is equal to all layers offloaded.
       )
   
