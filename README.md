@@ -15,6 +15,7 @@ We are not the first to try and work on Funsearch, changes have been made my git
 - **Simplified Setup**: Follow the detailed setup guide to install and configure the necessary environment.
 - **Command-line Execution**: Run Funsearch experiments easily from the command line using `run_funsearch.py`.
 - **Comprehensive Analysis**: Analyze the results of your experiments using the `run_analyzer.ipynb` Jupyter notebook.
+- **New word design problem**: DNA Word problem added, which has not been tried before by Google, to show additional problems can be run. 
 
 ## Getting Started
 
@@ -32,7 +33,7 @@ python run_funsearch.py
 After completing a run, you can analyze the results using the run_analyzer.ipynb Jupyter notebook. This notebook provides an exploratory data analysis to get a quick overview over the results. Please refer to the specific eval_datetime.txt for analysis on a specific run.
 
 ## Contact
-If you have any questions or need further assistance, please feel free to contact me!
+If you have any questions or need further assistance, please feel free to contact me! This project is written by MsC Computer Science students Remco Stuij and Peter van Driel at Leiden University. Any suggestions or improvements are welcome. 
 
 #### Disclaimer
-This project is written by MsC Computer Science students Remco Stuij and Peter van Driel at Leiden University. Any suggestions or improvements are welcome. 
+This is not an official product. 
