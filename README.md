@@ -8,6 +8,8 @@ The Funsearch algorithm, originally developed by Google DeepMind, is a cutting-e
 
 You can also find the original Funsearch repository on [GitHub](https://github.com/google-deepmind/funsearch).
 
+We are not the first to try and work on Funsearch, changes have been made my github user: jonppe at [Github](https://github.com/jonppe/funsearch) Our build mostly continues on his work.
+
 ## Features
 
 - **Simplified Setup**: Follow the detailed setup guide to install and configure the necessary environment.
