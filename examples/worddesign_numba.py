@@ -1,6 +1,7 @@
 import numpy as np
 from numba import njit, prange
 from typing import List, Tuple
+import funsearch
 
 @njit
 def generate_initial_sequences(n: int) -> np.ndarray:
@@ -21,9 +22,6 @@ def is_complementary(seq1, seq2):
     mismatches = np.sum(seq1_reversed != seq2_complement)
     return mismatches >= 4
 
-def priority(el: Tuple[int, ...], n: int) -> float:
-    """Returns the priority with which we want to add `element` to the word set."""
-    return 0.0
 
 @njit
 def check_conditions_post(wordset: np.ndarray) -> np.ndarray:
@@ -81,7 +79,13 @@ def solve(n: int) -> np.ndarray:
     wordset = check_conditions_post(wordset)
     return wordset
 
+@funsearch.run
 def evaluate(n: int) -> int:
     """Returns the size of an n-dimensional set of DNA sequences."""
     wordset = solve(n)
     return len(wordset)
+
+@funsearch.evolve
+def priority(el: Tuple[int, ...], n: int) -> float:
+    """Returns the priority with which we want to add `element` to the word set."""
+    return 0.0
