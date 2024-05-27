@@ -2,18 +2,17 @@
 
 Return code for Python method priority_vX, where every iteration of priority_vX improves on previous iterations.
 
-Be creative, try to not make the changes to big.  
-Find an algorithm that improves over the other priority functions.
+Be creative, try to not make the changes to big, try to improve over previous functions!  
 
-only return code without explanation or something else, this is to reduce overhead and to use output in a sequence. Only return 1 function in total.
+Return only the priority_v2 function, no other text or code:
 
-Return the code in full function such as:
-
-def priority(el: Tuple[int, ...], n: int) -> float:
+def priority_v2(el: Tuple[int, ...], n: int) -> float:
 
     'Function'
 
     return
+
+  
 
 """
 import itertools
