@@ -21,7 +21,9 @@ import numpy as np
 from funsearch import evaluator
 from funsearch import programs_database
 import re
+import ast
 import autopep8
+import logging
 
 def reformat_to_two_spaces(code: str) -> str:
     # Regular expression to match leading spaces at the beginning of each line
@@ -40,7 +42,6 @@ def reformat_to_two_spaces(code: str) -> str:
     return "\n".join(reformatted_lines)
 
 def post_process(code: str) -> str:
-    # Define a list of patterns to remove
     patterns = [
         r'\[/INST\]',
         r'>\[INST\]',
@@ -52,14 +53,19 @@ def post_process(code: str) -> str:
         r'\[/PYTHON\]',
     ]
 
-    # Function to remove code markers
-    def remove_code_markers(code):
-        # Loop through the list of patterns and remove each one from the code string
-        for pattern in patterns:
-            code = re.sub(pattern, '', code)
+    for pattern in patterns:
+        code = re.sub(pattern, '', code)
+    return code
+
+def validate_python_code(code: str) -> str:
+    try:
+        ast.parse(code)
         return code
-    
-    return remove_code_markers(code)
+    except SyntaxError as e:
+        logging.error(f"Syntax error in code: {e}")
+        lines = code.split('\n')
+        trimmed_code = '\n'.join(lines[:e.lineno - 1])
+        return validate_python_code(trimmed_code)
 
 
 class LLM:
@@ -87,9 +93,10 @@ class LLM:
       output_text = output['choices'][0]['text']
       code_start = output_text.find('```@funsearch.run\n') + 3  # Find the start of the code block
       response = output_text[code_start:]
-      response = post_process(response)   #PVD: clean up the most common garbage
+      response = post_process(response)
+      response = validate_python_code(response)
       response = autopep8.fix_code(response, options={
-        'indent_size': 2  #PVD: format to 2 spaces
+          'indent_size': 2  # Format to 2 spaces
       })
       with open('last_eval.txt', 'a') as file_eval:   #PVD: output for inspection what else may be required
         file_eval.write(f"FINAL RESPONSE\n{response}\n")
