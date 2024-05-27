@@ -21,6 +21,7 @@ import numpy as np
 from funsearch import evaluator
 from funsearch import programs_database
 import re
+import autopep8
 
 def reformat_to_two_spaces(code: str) -> str:
     # Regular expression to match leading spaces at the beginning of each line
@@ -86,9 +87,11 @@ class LLM:
       output_text = output['choices'][0]['text']
       code_start = output_text.find('```@funsearch.run\n') + 3  # Find the start of the code block
       response = output_text[code_start:]
-      response = post_process(response)
-      response = reformat_to_two_spaces(response)
-      with open('last_eval.txt', 'a') as file_eval:  
+      response = post_process(response)   #PVD: clean up the most common garbage
+      response = autopep8.fix_code(response, options={
+        'indent_size': 2  #PVD: format to 2 spaces
+      })
+      with open('last_eval.txt', 'a') as file_eval:   #PVD: output for inspection what else may be required
         file_eval.write(f"FINAL RESPONSE\n{response}\n")
         file_eval.flush()  
 
@@ -128,7 +131,7 @@ class Sampler:
     samples = self._llm.draw_samples(prompt.code)
     # This loop can be executed in parallel on remote evaluator machines.
 
-    with open('last_eval.txt', 'a') as file_eval:   
+    with open('last_eval.txt', 'a') as file_eval:   #PVD: show when output is valid according to parser
       file_eval.write(f"SAMPLES\n{samples}\n")
       file_eval.flush()
 

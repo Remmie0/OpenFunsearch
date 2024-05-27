@@ -43,6 +43,7 @@ MANIFEST
 
 #programs
 program.py
+test.ipynb
 
 #All text, csv, png files are run specific 
 *.txt

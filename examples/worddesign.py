@@ -5,7 +5,7 @@ Return code for Python method priority_vX, where every iteration of priority_vX 
 Be creative, try to not make the changes to big.  
 Find an algorithm that improves over the other priority functions.
 
-Only return code without explanation, make sure the code is parsable with two spaces for identation, please return only one function! 
+only return code without explanation or something else, this is to reduce overhead and to use output in a sequence. Only return 1 function in total.
 
 Return the code in full function such as:
 
