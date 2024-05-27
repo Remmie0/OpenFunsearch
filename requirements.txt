@@ -102,3 +102,4 @@ typing_extensions==4.10.0
 urllib3==2.2.1
 wandb==0.16.6
 yarl==1.9.4
+numba==0.59.1
