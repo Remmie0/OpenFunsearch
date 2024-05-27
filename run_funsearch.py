@@ -39,7 +39,7 @@ if __name__ == '__main__':
     sys.argv = [
         'funsearch', 
         'run', 
-        'examples/worddesign.py', 
+        'examples/worddesign_numba.py', 
         # 'examples/admissibleset.py', 
         # 'examples/shannoncyclic.py', 
         '8', 
