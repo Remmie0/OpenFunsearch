@@ -8,6 +8,7 @@ import datetime
 
 import click
 import llm
+import torch
 from llama_cpp import Llama
 
 from dotenv import load_dotenv
@@ -119,7 +120,7 @@ def run(spec_file, inputs, model_name, output_path, load_backup, iterations, sam
         verbose=False,
         n_ctx= 1024,             # The max sequence length to use - note that longer sequence lengths require much more resources
         n_threads=32,            # The number of CPU threads to use, tailor to your system and the resulting performance
-        n_gpu_layers=-1          # The number of layers to offload to GPU, if you have GPU acceleration available. Set to 0 if no GPU acceleration, -1 is equal to all layers offloaded.
+        n_gpu_layers=25         # The number of layers to offload to GPU, if you have GPU acceleration available. Set to 0 if no GPU acceleration, -1 is equal to all layers offloaded.
       )
   
   lm = sampler.LLM(2, model, log_path, model_type)

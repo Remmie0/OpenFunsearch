@@ -72,6 +72,7 @@ class LLM:
     self.model_type = model_type
 
   def _draw_sample(self, prompt: str) -> str:
+
     if self.model_type=='gpt':
       response = self.model.prompt(prompt)
     else:
@@ -81,8 +82,7 @@ class LLM:
           stop=["</s>"],
           echo=True
       )
-      # PVD basic prompt engineering
-      # TODO: needs to vary by LLM
+
       output_text = output['choices'][0]['text']
       code_start = output_text.find('```@funsearch.run\n') + 3  # Find the start of the code block
       response = output_text[code_start:]
