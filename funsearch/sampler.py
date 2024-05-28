@@ -21,9 +21,7 @@ import numpy as np
 from funsearch import evaluator
 from funsearch import programs_database
 import re
-import ast
 import autopep8
-import logging
 
 def reformat_to_two_spaces(code: str) -> str:
     # Regular expression to match leading spaces at the beginning of each line
@@ -42,6 +40,7 @@ def reformat_to_two_spaces(code: str) -> str:
     return "\n".join(reformatted_lines)
 
 def post_process(code: str) -> str:
+    # Define a list of patterns to remove
     patterns = [
         r'\[/INST\]',
         r'>\[INST\]',
@@ -118,7 +117,7 @@ class LLM:
 
       response = post_process(response)
       response = autopep8.fix_code(response, options={
-          'indent_size': 2  # Format to 2 spaces
+        'indent_size': 2  #PVD: format to 2 spaces
       })
       with open('last_eval.txt', 'a') as file_eval:   #PVD: output for inspection what else may be required
         file_eval.write(f"FINAL RESPONSE\n{response}\n")
