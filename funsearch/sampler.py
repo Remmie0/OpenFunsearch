@@ -100,12 +100,12 @@ class LLM:
       code_start_def = output_text.find('def priority_v2')
 
       #Actually extracts the code if it found a valid starting point
-      if code_start != -1:
-          response = output_text[code_start:]
-      elif code_start_py != -1 and code_end_py != -1:
+      if code_start_py != -1 and code_end_py != -1:
           response = output_text[code_start_py + len('```python\n'):code_end_py]
       elif code_start_md != -1 and code_end_md != -1:
           response = output_text[code_start_md + len('```\n'):code_end_md]
+      elif code_start != -1:
+          response = output_text[code_start:]
       elif code_start_def != -1:
           response = output_text[code_start_def:]
       else:
