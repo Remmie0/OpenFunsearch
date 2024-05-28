@@ -5,15 +5,12 @@ Return code for Python method priority_vX, where every iteration of priority_vX 
 Be creative, try to not make the changes to big, try to improve over previous functions!  
 
 Return only the priority_v2 function, no other text or code:
+for example:  
 
-def priority_v2(el: Tuple[int, ...], n: int) -> float:
+def priority(el: Tuple[int, ...], n: int) -> float:
 
-    'Function'
 
-    return
-
-  
-
+    return priority
 """
 import itertools
 import numpy as np

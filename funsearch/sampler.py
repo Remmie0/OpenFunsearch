@@ -57,17 +57,6 @@ def post_process(code: str) -> str:
         code = re.sub(pattern, '', code)
     return code
 
-def validate_python_code(code: str) -> str:
-    try:
-        ast.parse(code)
-        return code
-    except SyntaxError as e:
-        logging.error(f"Syntax error in code: {e}")
-        lines = code.split('\n')
-        trimmed_code = '\n'.join(lines[:e.lineno - 1])
-        return validate_python_code(trimmed_code)
-
-
 class LLM:
   """Language model that predicts continuation of provided source code."""
 
@@ -91,10 +80,43 @@ class LLM:
       )
 
       output_text = output['choices'][0]['text']
+
+      #Saves full response and prompt for debugging purposes
+      with open('last_full_responses.txt', 'a') as file_eval:  
+        file_eval.write(f"PRE POSTPROCESSING RESPONSE {self.prompt_count}\n{output_text}\n")
+        file_eval.flush()  
+        
+      with open('last_prompts.txt', 'a') as file_eval:  
+        file_eval.write(f"Prompt {self.prompt_count}\n{prompt}\n")
+        file_eval.flush()  
+
+      #Code to try and find starting and ending point of the code, does not look clean, but catches most of the code 
+
       code_start = output_text.find('```@funsearch.run\n') + 3  # Find the start of the code block
-      response = output_text[code_start:]
+      code_start_md = output_text.find('```\n')
+      code_end_md = output_text.find('```', code_start_md + 3)
+      code_start_py = output_text.find('```python\n')
+      code_end_py = output_text.find('```', code_start_py + 3)
+      code_start_def = output_text.find('def priority_v2')
+
+      #Actually extracts the code if it found a valid starting point
+      if code_start != -1:
+          response = output_text[code_start:]
+      elif code_start_py != -1 and code_end_py != -1:
+          response = output_text[code_start_py + len('```python\n'):code_end_py]
+      elif code_start_md != -1 and code_end_md != -1:
+          response = output_text[code_start_md + len('```\n'):code_end_md]
+      elif code_start_def != -1:
+          response = output_text[code_start_def:]
+      else:
+          response = output_text
+
+      #Saves after process response for debugging purposes
+      with open('last_processed_responses.txt', 'a') as file_eval:  
+        file_eval.write(f"AFTER POSTPROCESSING RESPONSE {self.prompt_count}\n{response}\n")
+        file_eval.flush()  
+
       response = post_process(response)
-      response = validate_python_code(response)
       response = autopep8.fix_code(response, options={
           'indent_size': 2  # Format to 2 spaces
       })

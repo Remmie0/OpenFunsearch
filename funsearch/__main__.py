@@ -94,6 +94,7 @@ def run(spec_file, inputs, model_name, output_path, load_backup, iterations, sam
               ./examples/cap_set_input_data.json
 """
 
+
   # Modify inputs to be filesystem-friendly (replace commas with underscores)
   sanitized_inputs = inputs.replace(",", "_")  
   timestamp = str(int(time.time()))
@@ -212,7 +213,40 @@ def save_last_eval(message):
     with open(last_eval_file_path, 'w') as last_eval_file:
         last_eval_file.write(message)
 
+def create_backup_folder(model_name):
+
+  current_time = datetime.datetime.now().strftime('%Y_%m_%d_%H_%M')
+  backup_folder = os.path.join('data', 'backups', f'{model_name}_{current_time}')
+  os.makedirs(backup_folder, exist_ok=True)
+  print('Backup folder made')
+  return backup_folder
+
+# Function to save contents of specified files to the backup folder and empty them
+def backup_and_clear_files(backup_folder, files):
+    for file in files:
+        if os.path.exists(file):
+            # Read the file contents
+            with open(file, 'r') as f:
+                content = f.read()
+
+            # Write the contents to the new backup file
+            new_backup_file_path = os.path.join(backup_folder, os.path.basename(file))
+            with open(new_backup_file_path, 'w') as f:
+                f.write(content)
+
+            # Clear the original file contents
+            with open(file, 'w') as f:
+                f.write("")
+
 def signal_handler(signal, frame):
+    backup_name = 'Run'
+    backup_folder = create_backup_folder(backup_name)
+
+    # List of files to be backed up and cleared
+    files_to_backup = ['last_eval.txt', 'last_prompts.txt', 'last_full_responses.txt', 'last_processed_responses.txt']
+    backup_and_clear_files(backup_folder, files_to_backup)
+
+
     save_last_eval("Code execution was manually interrupted.")
     sys.exit(0)
 
@@ -227,10 +261,14 @@ if __name__ == '__main__':
   try:
     print("Running main code...")
 
+
+
     while True:
       main()
 
   except Exception as e:
     error_message = ''.join(traceback.format_exception(None, e, e.__traceback__))
+    # Create a new backup folder for the current session
     save_last_eval(f"Code crashed or interrupted with the following error:\n{error_message}")
     raise
+
