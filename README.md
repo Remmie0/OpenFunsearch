@@ -12,6 +12,7 @@ We are not the first to try and work on Funsearch, changes have been made my git
 
 ## Features
 
+- **Open LLM Integration**: Implemented LLM integration that accepts all LLama models, OpenAI API and all huggingface .gguf models.
 - **Simplified Setup**: Follow the detailed setup guide to install and configure the necessary environment.
 - **Command-line Execution**: Run Funsearch experiments easily from the command line using `run_funsearch.py`.
 - **Comprehensive Analysis**: Analyze the results of your experiments using the `run_analyzer.ipynb` Jupyter notebook.
